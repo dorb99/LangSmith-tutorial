@@ -7,6 +7,7 @@ extraction_prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             "Extract details from the user request based on category.\n"
+            "look for naming currency as a string or char($,€,£,¥,etc.) in the user request\n"
             "Input keys: user_input, category.\n"
             "Return only valid JSON. Include 'missing_fields' as a list.\n"
             "Category schemas:\n"

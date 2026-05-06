@@ -1,10 +1,13 @@
 # langsmith_langchain_lab
 
-A beginner-to-mid-level educational project for learning **LangChain LCEL** with **LangSmith observability**.
+An educational project for learning **LangChain workflow orchestration** with **LangSmith observability**.
 
 ## What this project teaches
 
 - How to build a small multi-step LangChain workflow (without LangGraph).
+- How to implement the same flow in two styles:
+  - a clear step-by-step Python function (`build_workflow`)
+  - an LCEL composition version (`build_workflow_LCEL`)
 - How to trace each workflow step in LangSmith.
 - How to attach tags and metadata using `RunnableConfig` and `with_config`.
 - How to run prompt version experiments (`prompt-v1` vs `prompt-v2`).
@@ -84,6 +87,22 @@ Every run includes:
   - `generate_final_answer`
 
 Open your LangSmith project (`LANGSMITH_PROJECT`) and inspect nested traces, tags, metadata, latency, and token usage.
+
+## Workflow implementation notes
+
+The workflow lives in `chains/workflow.py` and has two implementations:
+
+- `build_workflow` (default): a straightforward step-by-step pipeline implemented inside one `RunnableLambda`.
+- `build_workflow_LCEL`: the same logic composed with LCEL operators (`RunnablePassthrough`, `RunnableBranch`, etc.).
+
+Both implementations follow the same processing stages:
+
+1. Normalize input and handle empty input with a safe fallback.
+2. Classify request category.
+3. Extract structured details.
+4. Add category-based context.
+5. Analyze risk (prompt-v1 or prompt-v2).
+6. Generate final answer and normalize output fields.
 
 ## Create evaluation dataset
 

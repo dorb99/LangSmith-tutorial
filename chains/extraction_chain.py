@@ -16,6 +16,7 @@ def build_extraction_chain(llm: ChatOpenAI | None = None) -> Runnable:
     chain = extraction_prompt | llm | parser
 
     def normalize(output: dict) -> dict:
+        
         if "missing_fields" not in output or not isinstance(output.get("missing_fields"), list):
             output["missing_fields"] = []
         return output
